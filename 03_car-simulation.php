@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 class FuelGauge
 {
@@ -15,7 +15,7 @@ class FuelGauge
         return $this->fuelAmount;
     }
 
-    public function fuelIncrement()
+    public function fuelIncrement(): void
     {
         $maxFuelAmount = 70;
         if ($this->fuelAmount !== $maxFuelAmount) {
@@ -23,7 +23,7 @@ class FuelGauge
         }
     }
 
-    public function fuelDecrement($milesDriven)
+    public function fuelDecrement($milesDriven): void
     {
         $minFuelAmount = 0;
 
