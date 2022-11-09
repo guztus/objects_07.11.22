@@ -31,7 +31,7 @@ class Movie
         $this->rating = round(($this->totalRatingSores / $this->totalTimesRated), 2);
     }
 
-    public function getRating(): ?float
+    public function getRating(): float
     {
         return $this->rating;
     }
