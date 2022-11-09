@@ -7,6 +7,7 @@ class Application
     function run()
     {
         while (true) {
+            echo PHP_EOL;
             echo "Choose the operation you want to perform \n";
             echo "Choose 0 for EXIT\n";
             echo "Choose 1 to fill movie store\n";
@@ -29,38 +30,37 @@ class Application
                     $wantToRent = readline("Movie to rent: ");
 
                     echo "-- -- -- -- --" . PHP_EOL;
-                    echo $this->rent_movie($wantToRent) ? "Enjoy your movie!\n" : "This movie is already rented out!\n";
+                    echo $this->rent_movie($wantToRent) ? "Enjoy your movie!\n" : "This movie is not available!\n";
                     echo "-- -- -- -- --" . PHP_EOL;
 
                     break;
                 case 3:
                     $wantToReturn = readline("Movie to return: ");
-
-                    echo "-- -- -- -- --" . PHP_EOL;
-                    echo $this->return_movie($wantToReturn) ? "Thanks, hope you liked it!\n" : "We actually don't have this movie in our inventory...\n";
                     echo "-- -- -- -- --" . PHP_EOL;
 
-                    $leaveARating = readline("Would you mind leaving a rating for the movie? (y\\n)\n");
+                    if ($this->return_movie($wantToReturn) instanceof Movie) {
+                        echo "Thanks, hope you liked it!\n";
+                    } else {
+                        echo "This movie hasn't been rented out...\n";
+                        echo "-- -- -- -- --" . PHP_EOL;
+                        break;
+                    }
 
-                    switch ($leaveARating) {
-                        case 'y':
-                            $correctFormat = false;
-                            while (!$correctFormat) {
-                                $userRating = readline("Rate it from 1 to 10 ");
-                                if ($userRating <= 0 || $userRating > 10) {
-                                    continue;
-                                } else {
-                                    foreach ($this->inventory as $movie) {
-                                        if ($movie->getTitle() == $wantToReturn) {
-                                            $movie->addRating($userRating);
-                                        }
-                                    }
-                                    $correctFormat = true;
+                    echo "-- -- -- -- --" . PHP_EOL;
+
+                    $correctFormat = false;
+                    while (!$correctFormat) {
+                        $userRating = readline("Rate it from 1 to 10 ");
+                        if ($userRating <= 0 || $userRating > 10) {
+                            continue;
+                        } else {
+                            foreach ($this->inventory as $movie) {
+                                if ($movie->getTitle() == $wantToReturn) {
+                                    $movie->addRating($userRating);
                                 }
                             }
-                            break;
-                        default:
-                            break;
+                            $correctFormat = true;
+                        }
                     }
 
                     break;
@@ -98,26 +98,24 @@ class Application
         $this->inventory [] = $movie;
     }
 
-    public function rent_movie($wantToRent): bool
+    public function rent_movie($wantToRent): ?Movie
     {
         foreach ($this->inventory as $movie) {
             if ($wantToRent == $movie->getTitle() && !$movie->getCheckedStatus()) {
-                $movie->checkOut();
-                return true;
+                return $movie;
             }
         }
-        return false;
+        return null;
     }
 
-    public function return_movie($wantToReturn): bool
+    public function return_movie($wantToReturn): ?Movie
     {
         foreach ($this->inventory as $movie) {
             if ($wantToReturn == $movie->getTitle() && $movie->getCheckedStatus()) {
-                $movie->returnMovie();
-                return true;
+                return $movie;
             }
         }
-        return false;
+        return null;
     }
 
     public function list_inventory(): array

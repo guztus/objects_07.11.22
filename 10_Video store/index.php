@@ -19,7 +19,9 @@ $pulpFiction->addRating(8);
 //echo $pulpFiction->getRating();
 // rating should be 8.67 -- and it is
 
-$pulpFiction->checkOut();
+$tarzan->checkOut();
+//echo $tarzan->getRating();
+
 
 //var_dump($app->rent_movie('Pulp Fiction'));
 
