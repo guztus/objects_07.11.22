@@ -5,24 +5,26 @@ require_once 'Movie.php';
 
 $app = new Application();
 
-$tarzan = new Movie('Tarzan');
-$pulpFiction = new Movie('Pulp Fiction');
+$matrix = new Movie('The Matrix');
+$godfather = new Movie('Godfather II');
+$starWarsIV = new Movie('Star Wars Episode IV: A New Hope');
+
+$app->add_movies($matrix);
+$app->add_movies($godfather);
+$app->add_movies($starWarsIV);
+
+$matrix->addRating(10);
+$matrix->addRating(8);
+$matrix->addRating(8);
+$godfather->addRating(10);
+$starWarsIV->addRating(3);
+
+$matrix->checkOut();
+$matrix->returnMovie();
+
+$starWarsIV->checkOut();
+
+$godfather->checkOut();
 
 
-$app->add_movies($tarzan);
-$app->add_movies($pulpFiction);
-
-$pulpFiction->addRating(10);
-$pulpFiction->addRating(8);
-$pulpFiction->addRating(8);
-
-//echo $pulpFiction->getRating();
-// rating should be 8.67 -- and it is
-
-$tarzan->checkOut();
-//echo $tarzan->getRating();
-
-
-//var_dump($app->rent_movie('Pulp Fiction'));
-
-$app->run();
+$app->run(); // list using this

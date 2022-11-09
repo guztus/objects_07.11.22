@@ -38,12 +38,10 @@ class Application
                     $wantToReturn = readline("Movie to return: ");
                     echo "-- -- -- -- --" . PHP_EOL;
 
-                    if ($this->return_movie($wantToReturn) instanceof Movie) {
+                    if ($this->return_movie($wantToReturn)) {
                         echo "Thanks, hope you liked it!\n";
                     } else {
                         echo "This movie hasn't been rented out...\n";
-                        echo "-- -- -- -- --" . PHP_EOL;
-                        break;
                     }
 
                     echo "-- -- -- -- --" . PHP_EOL;
@@ -67,7 +65,7 @@ class Application
                 case 4:
                     $movies = $this->list_inventory();
 
-                    echo "-- -- -- -- --" . PHP_EOL;
+                    echo PHP_EOL . "-- -- -- -- --" . PHP_EOL;
                     echo "Movies: " . PHP_EOL;
                     echo "-- -- -- -- --" . PHP_EOL;
 
@@ -98,24 +96,26 @@ class Application
         $this->inventory [] = $movie;
     }
 
-    public function rent_movie($wantToRent): ?Movie
+    public function rent_movie($wantToRent): bool
     {
         foreach ($this->inventory as $movie) {
             if ($wantToRent == $movie->getTitle() && !$movie->getCheckedStatus()) {
-                return $movie;
+                $movie->checkOut();
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
-    public function return_movie($wantToReturn): ?Movie
+    public function return_movie($wantToReturn): bool
     {
         foreach ($this->inventory as $movie) {
             if ($wantToReturn == $movie->getTitle() && $movie->getCheckedStatus()) {
-                return $movie;
+                $movie->returnMovie();
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
     public function list_inventory(): array
