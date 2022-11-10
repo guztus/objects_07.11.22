@@ -9,9 +9,7 @@ $matrix = new Movie('The Matrix');
 $godfather = new Movie('Godfather II');
 $starWarsIV = new Movie('Star Wars Episode IV: A New Hope');
 
-$app->add_movies($matrix);
-$app->add_movies($godfather);
-$app->add_movies($starWarsIV);
+$app->add_movies($matrix, $godfather, $starWarsIV);
 
 $matrix->addRating(10);
 $matrix->addRating(8);

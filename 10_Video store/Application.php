@@ -22,9 +22,12 @@ class Application
                     echo "Bye!";
                     die;
                 case 1:
-                    $moviesToAdd = new Movie (readline("Movie to add: "));
-
-                    $this->add_movies($moviesToAdd);
+                    $moviesToAdd = (readline("Movies to add (if multiple - separate by ;): "));
+                    $movies = explode(';', $moviesToAdd);
+                    foreach ($movies as $movie) {
+                        $movie = trim($movie);
+                        $this->add_movies(new Movie ($movie));
+                    }
                     break;
                 case 2:
                     $wantToRent = readline("Movie to rent: ");
@@ -91,9 +94,11 @@ class Application
         }
     }
 
-    public function add_movies(Movie $movie): void
+    public function add_movies(Movie ...$movies): void
     {
-        $this->inventory [] = $movie;
+        foreach ($movies as $movie) {
+            $this->inventory [] = $movie;
+        }
     }
 
     public function rent_movie($wantToRent): bool
